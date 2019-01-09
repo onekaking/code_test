@@ -13,13 +13,13 @@
         </tr>
       </thead>
       <tbody>
-        <template v-for="row in data.rows">
-          <tr class="head" :key="row.title.order">
+        <template v-for="(row, index) in data.rows">
+          <tr class="head" :key="row.title.order" v-on:click="selectedFilter(index)">
             <td>{{ row.title.order }}</td>
             <td>{{ row.title.type }}</td>
             <td>{{ row.title.question }}</td>
           </tr>
-          <tr class="body active" :key="`${row.title.order}_content}`">
+          <tr v-bind:class="{ body: true, active: selectRow === index }" :key="`${row.title.order}_content}`">
             <td colspan="3">
               <div class="answer img-preview" id="cont0">
                 <span v-html="row.content"></span>
@@ -49,6 +49,12 @@ export default {
   mounted () {
     this.data.columns = [...jsonData.columns]
     this.data.rows = [...jsonData.rows]
+  },
+
+  methods : {
+    selectedFilter: function (indexValue) {
+      this.selectRow = indexValue;
+    }
   }
 };
 </script>
